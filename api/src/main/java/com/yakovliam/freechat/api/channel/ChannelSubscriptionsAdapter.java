@@ -12,22 +12,22 @@ import java.util.List;
  * @param <C> the channel list type
  * @param <U> the user type
  */
-public abstract class ChannelSubscriptionsAdapter<T, C extends Channel, U extends User<?>> {
+public abstract class ChannelSubscriptionsAdapter<T extends ChannelSubscriptionsActor<C, U>, C extends Channel, U extends User<?>> {
 
     /**
      * Provider that provides the subscriptions to the adapter
      * Usually extends a {@link ChannelSubscriptionsHolder}, but sometimes it can be a networking
      * class, like something that uses RabbitMQ or Redis
      */
-    protected T provider;
+    protected T providerActor;
 
     /**
      * Channels subscriptions adapter
      *
-     * @param provider provider
+     * @param providerActor provider
      */
-    public ChannelSubscriptionsAdapter(T provider) {
-        this.provider = provider;
+    public ChannelSubscriptionsAdapter(T providerActor) {
+        this.providerActor = providerActor;
     }
 
     /**

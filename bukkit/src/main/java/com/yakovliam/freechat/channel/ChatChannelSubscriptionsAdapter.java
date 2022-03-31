@@ -18,22 +18,22 @@ import java.util.List;
 public class ChatChannelSubscriptionsAdapter<T extends ChannelSubscriptionsActor<ChatChannel, ChatUser>>
         extends ChannelSubscriptionsAdapter<T, ChatChannel, ChatUser> {
 
-    public ChatChannelSubscriptionsAdapter(T provider) {
-        super(provider);
+    public ChatChannelSubscriptionsAdapter(T providerActor) {
+        super(providerActor);
     }
 
     @Override
     public List<ChatChannel> subscribed(ChatUser user) {
-        return provider.subscribed(user);
+        return providerActor.subscribed(user);
     }
 
     @Override
     public void subscribe(ChatUser user, ChatChannel channel) {
-        this.provider.subscribe(user, channel);
+        this.providerActor.subscribe(user, channel);
     }
 
     @Override
     public void unsubscribe(ChatUser user, ChatChannel channel) {
-        this.provider.unsubscribe(user, channel);
+        this.providerActor.unsubscribe(user, channel);
     }
 }
