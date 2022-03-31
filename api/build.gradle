@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow'
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT'
+}
+
+shadowJar {
+    archiveBaseName.set("freechat-api-${project.version}")
+    archiveClassifier.set('')
+    archiveVersion.set('')
+}

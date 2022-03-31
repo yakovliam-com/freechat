@@ -1,0 +1,16 @@
+plugins {
+    id "java"
+}
+
+subprojects {
+
+    group 'com.yakovliam'
+    version '1.0.0-SNAPSHOT'
+    project.ext.name = 'FreeChat'
+    project.ext.groupId = 'com.yakovliam.freechat'
+
+    repositories {
+        mavenCentral()
+        maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    }
+}
