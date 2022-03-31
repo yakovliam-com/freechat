@@ -4,6 +4,14 @@ import com.yakovliam.freechat.api.user.User;
 
 import java.util.List;
 
+/**
+ * An adapter class that acts as the access point (frontend) for any other classes that want to
+ * subscribe/unsubscribe/get a list of subscribed channels for a user
+ *
+ * @param <T> the provider type
+ * @param <C> the channel list type
+ * @param <U> the user type
+ */
 public abstract class ChannelSubscriptionsAdapter<T, C extends Channel, U extends User<?>> {
 
     /**
@@ -28,7 +36,7 @@ public abstract class ChannelSubscriptionsAdapter<T, C extends Channel, U extend
      * @param user user
      * @return list of subscribed channels
      */
-    public abstract List<C> subscribedChannels(U user);
+    public abstract List<C> subscribed(U user);
 
     /**
      * Subscribes a user to a channel

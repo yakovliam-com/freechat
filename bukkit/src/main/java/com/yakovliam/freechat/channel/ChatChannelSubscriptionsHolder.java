@@ -3,23 +3,18 @@ package com.yakovliam.freechat.channel;
 import com.yakovliam.freechat.api.channel.ChannelSubscriptionsHolder;
 import com.yakovliam.freechat.user.ChatUser;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-public class ChatChannelSubscriptionsHolder extends ChannelSubscriptionsHolder<ChatChannel> {
+/**
+ * This class is a backend for the {@link com.yakovliam.freechat.api.channel.ChannelSubscriptionsAdapter}
+ * Consequently of extending the {@link ChannelSubscriptionsHolder}, this class is also an
+ * {@link com.yakovliam.freechat.api.channel.ChannelSubscriptionsActor}
+ */
+public class ChatChannelSubscriptionsHolder extends ChannelSubscriptionsHolder<ChatChannel, ChatUser> {
 
-    /**
-     * Returns a list of subscribed channels
-     *
-     * @param user user
-     * @return subscribed channels
-     */
+    @Override
     public List<ChatChannel> subscribed(ChatUser user) {
-        return this.subscribed((uuidListEntry -> uuidListEntry.getKey().equals(user.uuid())))
-                .map(Map.Entry::getValue)
-                .findFirst()
-                .orElse(Collections.emptyList());
+        return super.subscribed(user);
     }
 
     /**
@@ -28,8 +23,9 @@ public class ChatChannelSubscriptionsHolder extends ChannelSubscriptionsHolder<C
      * @param user    user
      * @param channel channel
      */
+    @Override
     public void subscribe(ChatUser user, ChatChannel channel) {
-        this.subscribe(user.uuid(), channel);
+        super.subscribe(user, channel);
     }
 
     /**
@@ -38,8 +34,8 @@ public class ChatChannelSubscriptionsHolder extends ChannelSubscriptionsHolder<C
      * @param user    user
      * @param channel channel
      */
+    @Override
     public void unsubscribe(ChatUser user, ChatChannel channel) {
-        this.unsubscribe(user.uuid(), channel);
+        super.unsubscribe(user, channel);
     }
-
 }

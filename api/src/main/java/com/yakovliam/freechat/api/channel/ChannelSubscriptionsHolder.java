@@ -7,7 +7,17 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public abstract class ChannelSubscriptionsHolder<T extends Channel> extends MapHolder<UUID, List<T>> {
+/**
+ * A holder class that acts as the backend for a {@link ChannelSubscriptionsAdapter}
+ * This class actually holds a list of subscribed channels (mapped to user uuids) in memory
+ * When using Redis/other networking, this class will be entirely unused because this class is ONLY
+ * for IN-MEMORY storage
+ *
+ * @param <T> the channel type
+ */
+public abstract class ChannelSubscriptionsHolder<T extends Channel, U extends User<?>> extends ChannelSubscriptionsActor<T, U> {
+
+    private final ChannelMapHolder<T> channelMapHolder;
 
     /**
      * Channel subscriptions holder
@@ -15,16 +25,15 @@ public abstract class ChannelSubscriptionsHolder<T extends Channel> extends MapH
      * @param held the held map
      */
     public ChannelSubscriptionsHolder(Map<UUID, List<T>> held) {
-        super(held);
+        this.channelMapHolder = new ChannelMapHolder<>(held);
     }
 
     /**
      * Channel subscriptions holder
      */
     public ChannelSubscriptionsHolder() {
-        super(new HashMap<>());
+        this.channelMapHolder = new ChannelMapHolder<>();
     }
-
 
     /**
      * Returns a subscribed channels stream by an entry set predicate
@@ -32,26 +41,41 @@ public abstract class ChannelSubscriptionsHolder<T extends Channel> extends MapH
      * @param predicate predicate
      * @return channel entry set channels stream
      */
-    protected Stream<Map.Entry<UUID, List<T>>> subscribed(Predicate<? super Map.Entry<UUID, List<T>>> predicate) {
-        return this.held().entrySet().stream().filter(predicate);
+    protected Stream<Map.Entry<UUID, List<T>>> filterSubscribed(Predicate<? super Map.Entry<UUID, List<T>>> predicate) {
+        return this.channelMapHolder.all().entrySet().stream().filter(predicate);
+    }
+
+    /**
+     * Fetches a user's subscribed channels
+     *
+     * @param user user user
+     * @return subscribed channels
+     */
+    @Override
+    public List<T> subscribed(U user) {
+        return this.filterSubscribed(uuidListEntry -> uuidListEntry.getKey().equals(user.uuid()))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElse(Collections.emptyList());
     }
 
     /**
      * Subscribes a user to a channel
      *
-     * @param uuid    uuid
+     * @param user    user
      * @param channel channel
      */
-    protected void subscribe(UUID uuid, T channel) {
+    @Override
+    public void subscribe(U user, T channel) {
         // get current subscribed list
-        List<T> subscribed = this.held().getOrDefault(uuid, Collections.emptyList());
+        List<T> subscribed = this.channelMapHolder.all().getOrDefault(user.uuid(), Collections.emptyList());
 
         if (subscribed.isEmpty()) {
             // create a new mutable array list
             List<T> updated = new ArrayList<>();
             updated.add(channel);
 
-            this.held().put(uuid, updated);
+            this.channelMapHolder.all().put(user.uuid(), updated);
         } else {
             // add the newly subscribed channel
             subscribed.add(channel);
@@ -61,12 +85,13 @@ public abstract class ChannelSubscriptionsHolder<T extends Channel> extends MapH
     /**
      * Unsubscribes a user to a channel
      *
-     * @param uuid    uuid
+     * @param user    user
      * @param channel channel
      */
-    protected void unsubscribe(UUID uuid, T channel) {
+    @Override
+    public void unsubscribe(U user, T channel) {
         // get current subscribed list
-        List<T> subscribed = this.held().getOrDefault(uuid, Collections.emptyList());
+        List<T> subscribed = this.channelMapHolder.all().getOrDefault(user.uuid(), Collections.emptyList());
 
         if (subscribed.isEmpty()) {
             return;
@@ -76,14 +101,31 @@ public abstract class ChannelSubscriptionsHolder<T extends Channel> extends MapH
         subscribed.removeIf(cur -> cur.handle().equals(channel.handle()));
     }
 
+    static class ChannelMapHolder<T extends Channel> extends MapHolder<UUID, List<T>> {
 
-    /**
-     * Puts a channel list in the holder
-     *
-     * @param user     user
-     * @param channels channels
-     */
-    public <P> void put(User<P> user, List<T> channels) {
-        this.held().put(user.uuid(), channels);
+        /**
+         * Holder
+         *
+         * @param held the held map
+         */
+        public ChannelMapHolder(Map<UUID, List<T>> held) {
+            super(held);
+        }
+
+        /**
+         * Holder
+         */
+        public ChannelMapHolder() {
+            super(new HashMap<>());
+        }
+
+        /**
+         * Public accessible abstraction method to allow for grabbing of the held map
+         *
+         * @return held
+         */
+        public Map<UUID, List<T>> all() {
+            return this.held();
+        }
     }
 }
