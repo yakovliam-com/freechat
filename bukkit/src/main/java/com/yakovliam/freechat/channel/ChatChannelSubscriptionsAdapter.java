@@ -13,7 +13,7 @@ import java.util.List;
  * <p>
  * From using a generic that is an actor, the provider is the class that has access to the low-level medium
  *
- * @param <T> An actor
+ * @param <T> an actor that acts as a mediator between this adapter and the backend
  */
 public class ChatChannelSubscriptionsAdapter<T extends ChannelSubscriptionsActor<ChatChannel, ChatUser>>
         extends ChannelSubscriptionsAdapter<T, ChatChannel, ChatUser> {

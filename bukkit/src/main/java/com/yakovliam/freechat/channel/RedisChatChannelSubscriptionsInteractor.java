@@ -6,6 +6,11 @@ import com.yakovliam.freechat.user.ChatUser;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This is an example class to exemplify the use of an actor class
+ * The other example, the {@link ChatChannelSubscriptionsHolder} is not an exemplar because it is a
+ * holder class, and that holder class is an actor
+ */
 public class RedisChatChannelSubscriptionsInteractor extends ChannelSubscriptionsActor<ChatChannel, ChatUser> {
 
     @Override

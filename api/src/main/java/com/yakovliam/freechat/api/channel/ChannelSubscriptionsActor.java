@@ -4,6 +4,13 @@ import com.yakovliam.freechat.api.user.User;
 
 import java.util.List;
 
+/**
+ * This actor class acts as frontend interface that a backend class (like {@link ChannelSubscriptionsHolder} uses to
+ * connect to the frontend adapter
+ *
+ * @param <C> any channel type
+ * @param <U> any user type
+ */
 public abstract class ChannelSubscriptionsActor<C extends Channel, U extends User<?>> {
 
     /**
