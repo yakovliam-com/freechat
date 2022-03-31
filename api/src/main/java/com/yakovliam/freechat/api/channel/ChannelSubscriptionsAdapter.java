@@ -12,7 +12,7 @@ import java.util.List;
  * @param <C> the channel list type
  * @param <U> the user type
  */
-public abstract class ChannelSubscriptionsAdapter<T extends ChannelSubscriptionsActor<C, U>, C extends Channel, U extends User<?>> {
+public class ChannelSubscriptionsAdapter<T extends ChannelSubscriptionsActor<C, U>, C extends Channel, U extends User<?>> {
 
     /**
      * Provider that provides the subscriptions to the adapter
@@ -31,27 +31,32 @@ public abstract class ChannelSubscriptionsAdapter<T extends ChannelSubscriptions
     }
 
     /**
-     * Returns a list of subscribed channels by a player
+     * Returns a list of subscribed channels through the actor
      *
      * @param user user
      * @return list of subscribed channels
      */
-    public abstract List<C> subscribed(U user);
+    public List<C> subscribed(U user) {
+        return this.providerActor.subscribed(user);
+    }
 
     /**
-     * Subscribes a user to a channel
+     * Subscribes a user to a channel through the actor
      *
      * @param user    user
      * @param channel channel
      */
-    public abstract void subscribe(U user, C channel);
+    public void subscribe(U user, C channel) {
+        this.providerActor.subscribe(user, channel);
+    }
 
     /**
-     * Unsubscribes a user to a channel
+     * Unsubscribes a user to a channel through the actor
      *
      * @param user    user
      * @param channel channel
      */
-    public abstract void unsubscribe(U user, C channel);
-
+    public void unsubscribe(U user, C channel) {
+        this.providerActor.unsubscribe(user, channel);
+    }
 }

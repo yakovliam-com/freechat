@@ -4,8 +4,6 @@ import com.yakovliam.freechat.api.channel.ChannelSubscriptionsActor;
 import com.yakovliam.freechat.api.channel.ChannelSubscriptionsAdapter;
 import com.yakovliam.freechat.user.ChatUser;
 
-import java.util.List;
-
 /**
  * This class is an adapter that allows for interaction with a medium that either
  * 1) interacts with memory
@@ -20,20 +18,5 @@ public class ChatChannelSubscriptionsAdapter<T extends ChannelSubscriptionsActor
 
     public ChatChannelSubscriptionsAdapter(T providerActor) {
         super(providerActor);
-    }
-
-    @Override
-    public List<ChatChannel> subscribed(ChatUser user) {
-        return providerActor.subscribed(user);
-    }
-
-    @Override
-    public void subscribe(ChatUser user, ChatChannel channel) {
-        this.providerActor.subscribe(user, channel);
-    }
-
-    @Override
-    public void unsubscribe(ChatUser user, ChatChannel channel) {
-        this.providerActor.unsubscribe(user, channel);
     }
 }

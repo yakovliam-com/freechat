@@ -46,7 +46,7 @@ public abstract class ChannelSubscriptionsHolder<T extends Channel, U extends Us
     }
 
     /**
-     * Fetches a user's subscribed channels
+     * Fetches a user's subscribed channels list from the map
      *
      * @param user user user
      * @return subscribed channels
@@ -60,7 +60,7 @@ public abstract class ChannelSubscriptionsHolder<T extends Channel, U extends Us
     }
 
     /**
-     * Subscribes a user to a channel
+     * Adds a channel to a user's subscribed list in-map
      *
      * @param user    user
      * @param channel channel
@@ -83,7 +83,7 @@ public abstract class ChannelSubscriptionsHolder<T extends Channel, U extends Us
     }
 
     /**
-     * Unsubscribes a user to a channel
+     * Removes a channel from a user's subscribed list in-map
      *
      * @param user    user
      * @param channel channel
