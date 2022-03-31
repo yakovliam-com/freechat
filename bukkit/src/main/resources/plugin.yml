@@ -1,0 +1,9 @@
+name: @name@
+version: @version@
+description: An efficient, enterprise-grade chatting solution
+authors: [yakovliam]
+website: https://yakovliam.com
+main: com.yakovliam.freechat.FreeChatPlugin
+api-version: 1.17
+depend:
+  - PlaceholderAPI
