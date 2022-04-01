@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class UsersHolder<T> extends MapHolder<UUID, User<T>> {
+public class UsersHolder<T extends User<?>> extends MapHolder<UUID, T> {
 
     /**
      * Users holder
@@ -22,7 +22,7 @@ public class UsersHolder<T> extends MapHolder<UUID, User<T>> {
      * @param predicate predicate
      * @return user
      */
-    public Optional<User<T>> firstUserByPredicate(Predicate<? super User<T>> predicate) {
+    public Optional<T> firstUserByPredicate(Predicate<? super T> predicate) {
         return this.firstValueByPredicate(predicate);
     }
 
@@ -31,7 +31,26 @@ public class UsersHolder<T> extends MapHolder<UUID, User<T>> {
      *
      * @param user user
      */
-    public void put(User<T> user) {
+    public void add(T user) {
         this.held().put(user.uuid(), user);
+    }
+
+    /**
+     * Removes a user from the holder
+     *
+     * @param user user
+     */
+    public void remove(T user) {
+        this.held().remove(user.uuid());
+    }
+
+    /**
+     * Returns a user from the holder
+     *
+     * @param uuid uuid
+     * @return user
+     */
+    public T get(UUID uuid) {
+        return this.held().getOrDefault(uuid, null);
     }
 }

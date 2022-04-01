@@ -5,7 +5,8 @@ import com.yakovliam.freechat.api.user.UsersHolder;
 import com.yakovliam.freechat.channel.ChatChannelSubscriptionsAdapter;
 import com.yakovliam.freechat.channel.ChatChannelSubscriptionsHolder;
 import com.yakovliam.freechat.format.ChatFormat;
-import org.bukkit.entity.Player;
+import com.yakovliam.freechat.listener.BukkitConnectionListener;
+import com.yakovliam.freechat.user.ChatUser;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FreeChatPlugin extends JavaPlugin {
@@ -13,7 +14,7 @@ public class FreeChatPlugin extends JavaPlugin {
     /**
      * The plugin's instance of a users holder
      */
-    private UsersHolder<Player> usersHolder;
+    private UsersHolder<ChatUser> usersHolder;
 
     /**
      * The plugin's instance of a formats holder
@@ -35,6 +36,9 @@ public class FreeChatPlugin extends JavaPlugin {
         // it will be connected to some kind of 'determining' method that sets it to an actor class that
         // uses whatever storage medium we want
         this.channelSubscriptionsAdapter = new ChatChannelSubscriptionsAdapter<>(new ChatChannelSubscriptionsHolder());
+
+        // register connection listener
+        this.getServer().getPluginManager().registerEvents(new BukkitConnectionListener(this.usersHolder), this);
     }
 
     /**
@@ -42,7 +46,7 @@ public class FreeChatPlugin extends JavaPlugin {
      *
      * @return users holder
      */
-    public UsersHolder<Player> usersHolder() {
+    public UsersHolder<ChatUser> usersHolder() {
         return this.usersHolder;
     }
 
