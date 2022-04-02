@@ -12,6 +12,13 @@ public interface Channel {
     String handle();
 
     /**
+     * Returns true if the current channel is the global channel
+     *
+     * @return is global
+     */
+    boolean isGlobal();
+
+    /**
      * If a user can use this channel
      *
      * @param user user

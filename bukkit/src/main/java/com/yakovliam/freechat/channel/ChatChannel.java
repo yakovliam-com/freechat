@@ -26,6 +26,12 @@ public class ChatChannel implements Channel {
     }
 
     @Override
+    public boolean isGlobal() {
+        // todo implement
+        return handle.equals("global"); // todo this is not final
+    }
+
+    @Override
     public <T> boolean canUse(User<T> user) {
         // todo implement
         return false;

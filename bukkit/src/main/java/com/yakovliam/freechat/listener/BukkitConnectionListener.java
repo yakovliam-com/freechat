@@ -2,6 +2,8 @@ package com.yakovliam.freechat.listener;
 
 import com.yakovliam.freechat.api.listener.ConnectionListener;
 import com.yakovliam.freechat.api.user.UsersHolder;
+import com.yakovliam.freechat.channel.ChatChannel;
+import com.yakovliam.freechat.channel.ChatChannelSubscriptionsAdapter;
 import com.yakovliam.freechat.user.ChatUser;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,13 +13,18 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class BukkitConnectionListener extends ConnectionListener<Player, ChatUser> implements Listener {
 
+    // todo temporary
+    private final ChatChannelSubscriptionsAdapter<?> channelSubscriptionsAdapter;
+
     /**
      * Bukkit connection listener
      *
      * @param usersHolder users holder
      */
-    public BukkitConnectionListener(UsersHolder<ChatUser> usersHolder) {
+    public BukkitConnectionListener(UsersHolder<ChatUser> usersHolder, ChatChannelSubscriptionsAdapter<?> channelSubscriptionsAdapter) {
         super(usersHolder);
+        // todo temporary
+        this.channelSubscriptionsAdapter = channelSubscriptionsAdapter;
     }
 
     @EventHandler
@@ -36,6 +43,9 @@ public class BukkitConnectionListener extends ConnectionListener<Player, ChatUse
         ChatUser chatUser = new ChatUser(player.getUniqueId(), player);
         // add the user to the users holder
         this.usersHolder.add(chatUser);
+
+        // todo temporary
+        channelSubscriptionsAdapter.subscribe(chatUser, new ChatChannel("global"));
 
         return chatUser;
     }
