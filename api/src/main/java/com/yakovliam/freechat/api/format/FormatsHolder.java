@@ -3,6 +3,7 @@ package com.yakovliam.freechat.api.format;
 import com.yakovliam.freechat.api.model.holder.MapHolder;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -23,6 +24,15 @@ public class FormatsHolder<T extends Format> extends MapHolder<String, T> {
      */
     public Optional<T> firstFormatByPredicate(Predicate<? super T> predicate) {
         return this.firstValueByPredicate(predicate);
+    }
+
+    /**
+     * Returns all formats
+     *
+     * @return all
+     */
+    public Map<String, T> all() {
+        return this.all();
     }
 
     /**

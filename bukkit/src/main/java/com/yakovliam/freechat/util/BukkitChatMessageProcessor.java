@@ -44,8 +44,7 @@ public class BukkitChatMessageProcessor implements ChatMessageProcessor<ChatUser
         List<ChatChannel> subscribed = this.channelSubscriptionsAdapter.subscribed(user);
 
         // determine the applicable format
-        // todo actually make this reflect the user's applicable format by permissions & priority
-        ChatFormat format = this.formatsHolder.generateDefault();
+        ChatFormat format = this.formatsHolder.get(user);
 
         // parse the format into a component
         // todo parse the content using replacers & permission context to remove links, etc.

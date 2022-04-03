@@ -1,0 +1,8 @@
+formats:
+  default:
+    priority: 10000
+    parts:
+      - "<dark_gray><bold>Chatter</bold></dark_gray>"
+      - "<gray>%player_name%</gray>"
+      - "<gray>: </gray>"
+      - "<white><message>"

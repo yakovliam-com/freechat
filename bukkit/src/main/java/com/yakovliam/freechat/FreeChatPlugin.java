@@ -1,9 +1,9 @@
 package com.yakovliam.freechat;
 
-import com.yakovliam.freechat.channel.ChatChannel;
 import com.yakovliam.freechat.channel.ChatChannelSubscriptionsAdapter;
 import com.yakovliam.freechat.channel.ChatChannelSubscriptionsHolder;
 import com.yakovliam.freechat.channel.ChatChannelsHolder;
+import com.yakovliam.freechat.config.ConfigProvider;
 import com.yakovliam.freechat.format.ChatFormatsHolder;
 import com.yakovliam.freechat.listener.BukkitChatListener;
 import com.yakovliam.freechat.listener.BukkitConnectionListener;
@@ -12,6 +12,8 @@ import com.yakovliam.freechat.util.BukkitChatMessageProcessor;
 import com.yakovliam.freechat.util.dispatcher.BukkitChatMessageDispatcher;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 
 public class FreeChatPlugin extends JavaPlugin {
 
@@ -23,6 +25,17 @@ public class FreeChatPlugin extends JavaPlugin {
          */
         BukkitAudiences bukkitAudiences = BukkitAudiences.create(this);
 
+        // load config provider
+        ConfigProvider configProvider;
+        try {
+            configProvider = new ConfigProvider(this.getDataFolder().toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            // stop in it's tracks...
+            // can't do anything without formats, etc...
+            return;
+        }
+
         /*
          * The plugin's instance of a users holder
          */
@@ -31,7 +44,7 @@ public class FreeChatPlugin extends JavaPlugin {
         /*
          * The plugin's instance of a formats holder
          */
-        ChatFormatsHolder formatsHolder = new ChatFormatsHolder();
+        ChatFormatsHolder formatsHolder = new ChatFormatsHolder(configProvider);
 
         /*
          * The plugin's instance of the channels holder
