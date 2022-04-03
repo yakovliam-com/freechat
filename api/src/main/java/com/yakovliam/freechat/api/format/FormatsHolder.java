@@ -32,7 +32,7 @@ public class FormatsHolder<T extends Format> extends MapHolder<String, T> {
      * @return all
      */
     public Map<String, T> all() {
-        return this.all();
+        return super.held();
     }
 
     /**
