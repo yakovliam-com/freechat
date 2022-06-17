@@ -38,8 +38,7 @@ public class ChatMiniMessageParser {
         return format.parts().stream()
                 .map(part -> PlaceholderAPI.setPlaceholders(sender, part))
                 .map(part -> part.replace('\u00A7', '&')) // hacky workaround to UN-color the text because PlaceholderAPI messes it up
-                .map(part -> miniMessage.deserialize(part, TagResolver.resolver("message", Tag.inserting(content))
-                ))
+                .map(part -> miniMessage.deserialize(part, TagResolver.resolver("message", Tag.inserting(content))))
                 .collect(Component.toComponent());
     }
 }
