@@ -46,6 +46,7 @@ public class BukkitChatMessageProcessor implements ChatMessageProcessor<ChatUser
         // determine the applicable format
         ChatFormat format = this.formatsHolder.get(user);
 
+
         // parse the format into a component
         // todo parse the content using replacers & permission context to remove links, etc.
         Component parsed = chatMiniMessageParser.parse(user.player(), Component.text(content), format);

@@ -3,7 +3,6 @@ package com.yakovliam.freechat.config.loader;
 import com.yakovliam.freechat.config.loader.factory.ChatFormatFactory;
 import com.yakovliam.freechat.format.ChatFormat;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.IOException;
@@ -46,8 +45,8 @@ public class FormatsConfigLoader extends AutomaticConfigCreator implements Confi
     @Override
     public List<ChatFormat> load() {
         // get a list of keys
-        List<String> keys = formatsRoot.childrenList().stream()
-                .map(node -> Objects.requireNonNull(node.key()).toString())
+        List<String> keys = formatsRoot.childrenMap().values().stream()
+                .map(commentedConfigurationNode -> Objects.requireNonNull(commentedConfigurationNode.key()).toString())
                 .toList();
 
         // loop through keys and build from the factory
